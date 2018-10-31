@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using QuoteAPI.Models;
+    using QuoteAPI.Repository;
     using QuoteAPI.Services;
 
     /// <summary>
@@ -80,6 +81,8 @@
         private static void PostPopulationRegistration(ContainerBuilder builder)
         {
             // Instead of registering your dependencies InstancePerRequest, use InstancePerLifetimeScope and you should get the same behavior.
+            builder.RegisterType<QuoteDBContext>().As<DbContext>().InstancePerLifetimeScope();
+            builder.RegisterType<QuoteDBContextRepository>().As<IRepository>().InstancePerLifetimeScope();
             builder.RegisterType<QuoteService>().As<IQuoteService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();

@@ -1,9 +1,7 @@
 ﻿namespace QuoteAPI.Models
 {
-    public partial class Quote
+    public partial class Quote : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Author { get; set; }

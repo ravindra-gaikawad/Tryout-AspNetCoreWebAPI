@@ -5,52 +5,50 @@
     using System.Linq.Expressions;
     using Microsoft.EntityFrameworkCore;
     using QuoteAPI.Models;
+    using QuoteAPI.Repository;
 
     public class QuoteService : IQuoteService
     {
-        private readonly QuoteDBContext context;
+        private readonly IRepository repository;
 
-        public QuoteService(QuoteDBContext context)
+        public QuoteService(IRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         void IQuoteService.Add(Quote entity)
         {
-            this.context.Quote.Add(entity);
-            this.context.SaveChanges();
+            this.repository.Add(entity);
         }
 
         void IQuoteService.Delete(Quote entity)
         {
-            this.context.Quote.Remove(entity);
-            this.context.SaveChanges();
+            this.repository.Delete(entity);
         }
 
         void IQuoteService.Edit(Quote entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
-            this.context.SaveChanges();
+            this.repository.Edit(entity);
         }
 
         Quote IQuoteService.Find(Expression<Func<Quote, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return this.repository.Find(predicate);
         }
 
         IQueryable<Quote> IQuoteService.FindAll(Expression<Func<Quote, bool>> predicate)
         {
-            return this.context.Quote.AsQueryable().Where(predicate);
+            return this.repository.FindAll(predicate);
         }
 
         Quote IQuoteService.Get(int id)
         {
-            return this.context.Quote.Find(id);
+            return this.repository.Get<Quote>(id);
         }
 
         IQueryable<Quote> IQuoteService.GetAll()
         {
-            return this.context.Quote;
+            return this.repository.GetAll<Quote>();
         }
     }
 }
