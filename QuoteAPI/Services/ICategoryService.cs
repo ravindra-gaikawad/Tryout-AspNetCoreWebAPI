@@ -11,9 +11,9 @@ namespace QuoteAPI.Services
     {
         Category Get(int id);
 
-        Category Find<T>(Expression<Func<Category, bool>> predicate);
+        Category Find(Expression<Func<Category, bool>> predicate);
 
-        IQueryable<Category> FindAll<T>(Expression<Func<Category, bool>> predicate);
+        IQueryable<Category> FindAll(Expression<Func<Category, bool>> predicate);
 
         IQueryable<Category> GetAll();
 

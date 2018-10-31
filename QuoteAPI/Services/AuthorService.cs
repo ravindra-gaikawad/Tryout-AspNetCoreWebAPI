@@ -35,12 +35,12 @@ namespace QuoteAPI.Services
             context.SaveChanges();
         }
 
-        Author IAuthorService.Find<T>(Expression<Func<Author, bool>> predicate)
+        Author IAuthorService.Find(Expression<Func<Author, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        IQueryable<Author> IAuthorService.FindAll<T>(Expression<Func<Author, bool>> predicate)
+        IQueryable<Author> IAuthorService.FindAll(Expression<Func<Author, bool>> predicate)
         {
             throw new NotImplementedException();
         }

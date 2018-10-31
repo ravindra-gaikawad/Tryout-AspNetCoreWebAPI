@@ -11,9 +11,9 @@ namespace QuoteAPI.Services
     {
         Author Get(int id);
 
-        Author Find<T>(Expression<Func<Author, bool>> predicate);
+        Author Find(Expression<Func<Author, bool>> predicate);
 
-        IQueryable<Author> FindAll<T>(Expression<Func<Author, bool>> predicate);
+        IQueryable<Author> FindAll(Expression<Func<Author, bool>> predicate);
 
         IQueryable<Author> GetAll();
 

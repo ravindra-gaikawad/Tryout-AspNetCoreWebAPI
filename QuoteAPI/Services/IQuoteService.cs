@@ -11,9 +11,9 @@ namespace QuoteAPI.Services
     {
         Quote Get(int id);
 
-        Quote Find<T>(Expression<Func<Quote, bool>> predicate);
+        Quote Find(Expression<Func<Quote, bool>> predicate);
 
-        IQueryable<Quote> FindAll<T>(Expression<Func<Quote, bool>> predicate);
+        IQueryable<Quote> FindAll(Expression<Func<Quote, bool>> predicate);
 
         IQueryable<Quote> GetAll();
 

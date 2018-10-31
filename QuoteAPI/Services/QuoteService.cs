@@ -35,12 +35,12 @@ namespace QuoteAPI.Services
             context.SaveChanges();
         }
 
-        Quote IQuoteService.Find<T>(Expression<Func<Quote, bool>> predicate)
+        Quote IQuoteService.Find(Expression<Func<Quote, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        IQueryable<Quote> IQuoteService.FindAll<T>(Expression<Func<Quote, bool>> predicate)
+        IQueryable<Quote> IQuoteService.FindAll(Expression<Func<Quote, bool>> predicate)
         {
             return context.Quote.AsQueryable().Where(predicate);
         }

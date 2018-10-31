@@ -35,12 +35,12 @@ namespace QuoteAPI.Services
             context.SaveChanges();
         }
 
-        Category ICategoryService.Find<T>(Expression<Func<Category, bool>> predicate)
+        Category ICategoryService.Find(Expression<Func<Category, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        IQueryable<Category> ICategoryService.FindAll<T>(Expression<Func<Category, bool>> predicate)
+        IQueryable<Category> ICategoryService.FindAll(Expression<Func<Category, bool>> predicate)
         {
             throw new NotImplementedException();
         }
