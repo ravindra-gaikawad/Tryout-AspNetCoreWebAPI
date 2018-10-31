@@ -4,13 +4,9 @@
 
     public partial class QuoteDBContext : DbContext
     {
-        public QuoteDBContext()
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        }
-
-        public QuoteDBContext(DbContextOptions<QuoteDBContext> options)
-            : base(options)
-        {
+            optionsBuilder.UseSqlServer("Server=localhost;Database=QuoteDB;Trusted_Connection=True;");
         }
 
         public virtual DbSet<Author> Author { get; set; }

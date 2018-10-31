@@ -30,7 +30,9 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<QuoteDBContext>(opt => opt.UseSqlServer("Server=localhost;Database=QuoteDB;Trusted_Connection=True;"));
+            // Note: We are not injecting DbContext using services.
+            // We are using Autofac and Overriden OnConfigure() of DbContext.
+            // Reference: https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Now register our services with Autofac container
@@ -80,8 +82,12 @@
         // If you register AFTER Populate those registrations can override things in the ServiceCollection. Mix and match as needed.
         private static void PostPopulationRegistration(ContainerBuilder builder)
         {
-            // Instead of registering your dependencies InstancePerRequest, use InstancePerLifetimeScope and you should get the same behavior.
+            // Note: We are not injecting DbContext using services.
+            // We are using Autofac and Overriden OnConfigure() of DbContext.
+            // Reference: https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
             builder.RegisterType<QuoteDBContext>().As<DbContext>().InstancePerLifetimeScope();
+
+            // Instead of registering your dependencies InstancePerRequest, use InstancePerLifetimeScope and you should get the same behavior.
             builder.RegisterType<QuoteDBContextRepository>().As<IRepository>().InstancePerLifetimeScope();
             builder.RegisterType<QuoteService>().As<IQuoteService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
