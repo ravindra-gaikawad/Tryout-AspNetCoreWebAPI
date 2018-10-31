@@ -153,6 +153,148 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "QuoteAPI",
+			"item": [
+				{
+					"name": "api/quotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/quotes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/quotes/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/quotes/104",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"quotes",
+								"104"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/quotes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Quote\",\n    \"author\": \"Ravindra Gaikawad\",\n    \"category\": \"\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/quotes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/quotes/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 104,\n    \"title\": \"Test Quote\",\n    \"author\": \"Ravindra Gaikawad\",\n    \"category\": \"x\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/quotes/104",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"quotes",
+								"104"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/quotes/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/quotes/104",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"quotes",
+								"104"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
