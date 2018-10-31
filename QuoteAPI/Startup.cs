@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QuoteAPI.Models;
+using QuoteAPI.Services;
 
 namespace QuoteAPI
 {
@@ -35,14 +36,49 @@ namespace QuoteAPI
             //Now register our services with Autofac container
             var builder = new ContainerBuilder();
 
+            // BEFORE Populate registrations.
+            PrePopulationRegistration(builder);
+
+            // Note that Populate is basically a foreach to add things
+            // into Autofac that are in the collection. If you register
+            // things in Autofac BEFORE Populate then the stuff in the
+            // ServiceCollection can override those things; if you register
+            // AFTER Populate those registrations can override things
+            // in the ServiceCollection. Mix and match as needed.
             builder.Populate(services);
+
+            // AFTER Populate registrations.
+            PostPopulationRegistration(builder);
+
             var container = builder.Build();
 
             //Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(container);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// If you register things in Autofac BEFORE Populate then the stuff in the ServiceCollection can override those things.
+        /// </summary>
+        /// <param name="builder"></param>
+        private static void PrePopulationRegistration(ContainerBuilder builder)
+        {
+
+        }
+
+        /// <summary>
+        /// If you register AFTER Populate those registrations can override things in the ServiceCollection. Mix and match as needed.
+        /// </summary>
+        /// <param name="builder"></param>
+        private static void PostPopulationRegistration(ContainerBuilder builder)
+        {
+            builder.RegisterType<QuoteService>().As<IQuoteService>();
+        }
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

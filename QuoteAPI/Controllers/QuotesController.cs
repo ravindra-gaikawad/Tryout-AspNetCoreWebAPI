@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using QuoteAPI.Models;
+using QuoteAPI.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace QuoteAPI.Controllers
 {
@@ -13,18 +10,18 @@ namespace QuoteAPI.Controllers
     [ApiController]
     public class QuotesController : ControllerBase
     {
-        private readonly QuoteDBContext _context;
+        private readonly IQuoteService quoteService;
 
-        public QuotesController(QuoteDBContext context)
+        public QuotesController(IQuoteService quoteService)
         {
-            _context = context;
+            this.quoteService = quoteService;
         }
 
         // GET: api/Quotes
         [HttpGet]
         public IEnumerable<Quote> GetQuote()
         {
-            return _context.Quote;
+            return quoteService.GetAll();
         }
 
         // GET: api/Quotes/5
@@ -36,7 +33,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var quote = await _context.Quote.FindAsync(id);
+            var quote = quoteService.Get(id);
 
             if (quote == null)
             {
@@ -60,23 +57,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(quote).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QuoteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            quoteService.Edit(quote);
 
             return NoContent();
         }
@@ -90,8 +71,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Quote.Add(quote);
-            await _context.SaveChangesAsync();
+            quoteService.Add(quote);
 
             return CreatedAtAction("GetQuote", new { id = quote.Id }, quote);
         }
@@ -105,21 +85,15 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var quote = await _context.Quote.FindAsync(id);
+            var quote = quoteService.Get(id);
             if (quote == null)
             {
                 return NotFound();
             }
 
-            _context.Quote.Remove(quote);
-            await _context.SaveChangesAsync();
+            quoteService.Delete(quote);
 
             return Ok(quote);
-        }
-
-        private bool QuoteExists(int id)
-        {
-            return _context.Quote.Any(e => e.Id == id);
         }
     }
 }
