@@ -155,7 +155,7 @@
 			]
 		},
 		{
-			"name": "QuoteAPI",
+			"name": "QuoteAPI-Quotes",
 			"item": [
 				{
 					"name": "api/quotes",
@@ -289,6 +289,68 @@
 								"api",
 								"quotes",
 								"104"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QuotesAPI-Authors",
+			"item": [
+				{
+					"name": "api/authors/:id/quotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/authors/3/quotes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"authors",
+								"3",
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QuotesAPI-Categories",
+			"item": [
+				{
+					"name": "api/categories/:id/quotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44358/api/categories/3/quotes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44358",
+							"path": [
+								"api",
+								"categories",
+								"3",
+								"quotes"
 							]
 						}
 					},
