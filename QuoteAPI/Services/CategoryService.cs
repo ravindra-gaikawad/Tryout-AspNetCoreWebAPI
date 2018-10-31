@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using QuoteAPI.Models;
-
-namespace QuoteAPI.Services
+﻿namespace QuoteAPI.Services
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Microsoft.EntityFrameworkCore;
+    using QuoteAPI.Models;
+
     public class CategoryService : ICategoryService
     {
         private readonly QuoteDBContext context;
@@ -19,20 +17,20 @@ namespace QuoteAPI.Services
 
         void ICategoryService.Add(Category entity)
         {
-            context.Category.Add(entity);
-            context.SaveChanges();
+            this.context.Category.Add(entity);
+            this.context.SaveChanges();
         }
 
         void ICategoryService.Delete(Category entity)
         {
-            context.Category.Remove(entity);
-            context.SaveChanges();
+            this.context.Category.Remove(entity);
+            this.context.SaveChanges();
         }
 
         void ICategoryService.Edit(Category entity)
         {
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            this.context.Entry(entity).State = EntityState.Modified;
+            this.context.SaveChanges();
         }
 
         Category ICategoryService.Find(Expression<Func<Category, bool>> predicate)
@@ -47,12 +45,12 @@ namespace QuoteAPI.Services
 
         Category ICategoryService.Get(int id)
         {
-            return context.Category.Find(id);
+            return this.context.Category.Find(id);
         }
 
         IQueryable<Category> ICategoryService.GetAll()
         {
-            return context.Category;
+            return this.context.Category;
         }
     }
 }

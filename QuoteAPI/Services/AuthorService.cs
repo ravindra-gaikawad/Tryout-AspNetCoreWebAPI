@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using QuoteAPI.Models;
-
-namespace QuoteAPI.Services
+﻿namespace QuoteAPI.Services
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Microsoft.EntityFrameworkCore;
+    using QuoteAPI.Models;
+
     public class AuthorService : IAuthorService
     {
         private readonly QuoteDBContext context;
@@ -19,20 +17,20 @@ namespace QuoteAPI.Services
 
         void IAuthorService.Add(Author entity)
         {
-            context.Author.Add(entity);
-            context.SaveChanges();
+            this.context.Author.Add(entity);
+            this.context.SaveChanges();
         }
 
         void IAuthorService.Delete(Author entity)
         {
-            context.Author.Remove(entity);
-            context.SaveChanges();
+            this.context.Author.Remove(entity);
+            this.context.SaveChanges();
         }
 
         void IAuthorService.Edit(Author entity)
         {
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            this.context.Entry(entity).State = EntityState.Modified;
+            this.context.SaveChanges();
         }
 
         Author IAuthorService.Find(Expression<Func<Author, bool>> predicate)
@@ -47,12 +45,12 @@ namespace QuoteAPI.Services
 
         Author IAuthorService.Get(int id)
         {
-            return context.Author.Find(id);
+            return this.context.Author.Find(id);
         }
 
         IQueryable<Author> IAuthorService.GetAll()
         {
-            return context.Author;
+            return this.context.Author;
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using QuoteAPI.Models;
-
-namespace QuoteAPI.Services
+﻿namespace QuoteAPI.Services
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Microsoft.EntityFrameworkCore;
+    using QuoteAPI.Models;
+
     public class QuoteService : IQuoteService
     {
         private readonly QuoteDBContext context;
@@ -19,20 +17,20 @@ namespace QuoteAPI.Services
 
         void IQuoteService.Add(Quote entity)
         {
-            context.Quote.Add(entity);
-            context.SaveChanges();
+            this.context.Quote.Add(entity);
+            this.context.SaveChanges();
         }
 
         void IQuoteService.Delete(Quote entity)
         {
-            context.Quote.Remove(entity);
-            context.SaveChanges();
+            this.context.Quote.Remove(entity);
+            this.context.SaveChanges();
         }
 
         void IQuoteService.Edit(Quote entity)
         {
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            this.context.Entry(entity).State = EntityState.Modified;
+            this.context.SaveChanges();
         }
 
         Quote IQuoteService.Find(Expression<Func<Quote, bool>> predicate)
@@ -42,17 +40,17 @@ namespace QuoteAPI.Services
 
         IQueryable<Quote> IQuoteService.FindAll(Expression<Func<Quote, bool>> predicate)
         {
-            return context.Quote.AsQueryable().Where(predicate);
+            return this.context.Quote.AsQueryable().Where(predicate);
         }
 
         Quote IQuoteService.Get(int id)
         {
-            return context.Quote.Find(id);
+            return this.context.Quote.Find(id);
         }
 
         IQueryable<Quote> IQuoteService.GetAll()
         {
-            return context.Quote;
+            return this.context.Quote;
         }
     }
 }

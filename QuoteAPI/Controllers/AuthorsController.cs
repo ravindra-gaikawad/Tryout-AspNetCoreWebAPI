@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuoteAPI.Models;
-using QuoteAPI.Services;
-
-namespace QuoteAPI.Controllers
+﻿namespace QuoteAPI.Controllers
 {
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
+    using QuoteAPI.Models;
+    using QuoteAPI.Services;
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorsController : ControllerBase
@@ -17,7 +12,7 @@ namespace QuoteAPI.Controllers
         private readonly IAuthorService authorService;
         private readonly IQuoteService quoteService;
 
-        public AuthorsController(IAuthorService authorService,IQuoteService quoteService)
+        public AuthorsController(IAuthorService authorService, IQuoteService quoteService)
         {
             this.authorService = authorService;
             this.quoteService = quoteService;
@@ -27,100 +22,100 @@ namespace QuoteAPI.Controllers
         [HttpGet]
         public IEnumerable<Author> GetAuthor()
         {
-            return authorService.GetAll();
+            return this.authorService.GetAll();
         }
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAuthor([FromRoute] int id)
+        public IActionResult GetAuthor([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var author = authorService.Get(id);
+            var author = this.authorService.Get(id);
 
             if (author == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(author);
+            return this.Ok(author);
         }
 
         // GET: api/Authors/5/Quotes
         [HttpGet("{id}/quotes")]
-        public async Task<IActionResult> GetQuotesByAuthor([FromRoute] int id)
+        public IActionResult GetQuotesByAuthor([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var author = authorService.Get(id);
+            var author = this.authorService.Get(id);
 
             if (author == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var quotes = quoteService.FindAll(q => q.Author == author.Name);
+            var quotes = this.quoteService.FindAll(q => q.Author == author.Name);
 
-            return Ok(quotes);
+            return this.Ok(quotes);
         }
 
         // PUT: api/Authors/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor([FromRoute] int id, [FromBody] Author author)
+        public IActionResult PutAuthor([FromRoute] int id, [FromBody] Author author)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != author.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            authorService.Edit(author);
+            this.authorService.Edit(author);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Authors
         [HttpPost]
-        public async Task<IActionResult> PostAuthor([FromBody] Author author)
+        public IActionResult PostAuthor([FromBody] Author author)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            authorService.Add(author);
+            this.authorService.Add(author);
 
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            return this.CreatedAtAction("GetAuthor", new { id = author.Id }, author);
         }
 
         // DELETE: api/Authors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor([FromRoute] int id)
+        public IActionResult DeleteAuthor([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var author = authorService.Get(id);
+            var author = this.authorService.Get(id);
             if (author == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            authorService.Delete(author);
+            this.authorService.Delete(author);
 
-            return Ok(author);
+            return this.Ok(author);
         }
     }
 }

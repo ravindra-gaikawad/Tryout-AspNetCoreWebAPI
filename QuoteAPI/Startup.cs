@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using QuoteAPI.Models;
-using QuoteAPI.Services;
-
-namespace QuoteAPI
+﻿namespace QuoteAPI
 {
+    using System;
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using QuoteAPI.Models;
+    using QuoteAPI.Services;
+
+    /// <summary>
+    /// References:
+    /// https://autofaccn.readthedocs.io/en/latest/integration/aspnetcore.html
+    /// http://www.codedigest.com/posts/49/using-autofac-instead-of-inbuilt-di-container-with-in-aspnet-core-mvc.
+    /// </summary>
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -33,7 +32,7 @@ namespace QuoteAPI
             services.AddDbContext<QuoteDBContext>(opt => opt.UseSqlServer("Server=localhost;Database=QuoteDB;Trusted_Connection=True;"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //Now register our services with Autofac container
+            // Now register our services with Autofac container
             var builder = new ContainerBuilder();
 
             // BEFORE Populate registrations.
@@ -52,35 +51,11 @@ namespace QuoteAPI
 
             var container = builder.Build();
 
-            //Create the IServiceProvider based on the container.
+            // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(container);
         }
 
-        /// <summary>
-        /// If you register things in Autofac BEFORE Populate then the stuff in the ServiceCollection can override those things.
-        /// </summary>
-        /// <param name="builder"></param>
-        private static void PrePopulationRegistration(ContainerBuilder builder)
-        {
-
-        }
-
-        /// <summary>
-        /// If you register AFTER Populate those registrations can override things in the ServiceCollection. Mix and match as needed.
-        /// </summary>
-        /// <param name="builder"></param>
-        private static void PostPopulationRegistration(ContainerBuilder builder)
-        {
-            builder.RegisterType<QuoteService>().As<IQuoteService>();
-            builder.RegisterType<AuthorService>().As<IAuthorService>();
-            builder.RegisterType<CategoryService>().As<ICategoryService>();
-        }
-
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -94,6 +69,20 @@ namespace QuoteAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+
+        // If you register things in Autofac BEFORE Populate then the stuff in the ServiceCollection can override those things.
+        private static void PrePopulationRegistration(ContainerBuilder builder)
+        {
+        }
+
+        // If you register AFTER Populate those registrations can override things in the ServiceCollection. Mix and match as needed.
+        private static void PostPopulationRegistration(ContainerBuilder builder)
+        {
+            // Instead of registering your dependencies InstancePerRequest, use InstancePerLifetimeScope and you should get the same behavior.
+            builder.RegisterType<QuoteService>().As<IQuoteService>().InstancePerLifetimeScope();
+            builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
+            builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
         }
     }
 }

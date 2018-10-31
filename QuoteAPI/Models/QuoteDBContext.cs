@@ -1,9 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-
-namespace QuoteAPI.Models
+﻿namespace QuoteAPI.Models
 {
+    using Microsoft.EntityFrameworkCore;
+
     public partial class QuoteDBContext : DbContext
     {
         public QuoteDBContext()
@@ -16,7 +14,9 @@ namespace QuoteAPI.Models
         }
 
         public virtual DbSet<Author> Author { get; set; }
+
         public virtual DbSet<Category> Category { get; set; }
+
         public virtual DbSet<Quote> Quote { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

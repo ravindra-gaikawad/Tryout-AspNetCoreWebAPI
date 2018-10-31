@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using QuoteAPI.Models;
-using QuoteAPI.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace QuoteAPI.Controllers
+﻿namespace QuoteAPI.Controllers
 {
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
+    using QuoteAPI.Models;
+    using QuoteAPI.Services;
+
     [Route("api/[controller]")]
     [ApiController]
     public class QuotesController : ControllerBase
@@ -21,79 +20,79 @@ namespace QuoteAPI.Controllers
         [HttpGet]
         public IEnumerable<Quote> GetQuote()
         {
-            return quoteService.GetAll();
+            return this.quoteService.GetAll();
         }
 
         // GET: api/Quotes/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetQuote([FromRoute] int id)
+        public IActionResult GetQuote([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var quote = quoteService.Get(id);
+            var quote = this.quoteService.Get(id);
 
             if (quote == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(quote);
+            return this.Ok(quote);
         }
 
         // PUT: api/Quotes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuote([FromRoute] int id, [FromBody] Quote quote)
+        public IActionResult PutQuote([FromRoute] int id, [FromBody] Quote quote)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != quote.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            quoteService.Edit(quote);
+            this.quoteService.Edit(quote);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Quotes
         [HttpPost]
-        public async Task<IActionResult> PostQuote([FromBody] Quote quote)
+        public IActionResult PostQuote([FromBody] Quote quote)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            quoteService.Add(quote);
+            this.quoteService.Add(quote);
 
-            return CreatedAtAction("GetQuote", new { id = quote.Id }, quote);
+            return this.CreatedAtAction("GetQuote", new { id = quote.Id }, quote);
         }
 
         // DELETE: api/Quotes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQuote([FromRoute] int id)
+        public IActionResult DeleteQuote([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var quote = quoteService.Get(id);
+            var quote = this.quoteService.Get(id);
             if (quote == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            quoteService.Delete(quote);
+            this.quoteService.Delete(quote);
 
-            return Ok(quote);
+            return this.Ok(quote);
         }
     }
 }

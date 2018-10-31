@@ -1,12 +1,10 @@
-﻿using QuoteAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace QuoteAPI.Services
+﻿namespace QuoteAPI.Services
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using QuoteAPI.Models;
+
     public interface ICategoryService
     {
         Category Get(int id);

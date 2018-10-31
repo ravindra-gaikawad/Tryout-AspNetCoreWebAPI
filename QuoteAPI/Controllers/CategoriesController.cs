@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuoteAPI.Models;
-using QuoteAPI.Services;
-
-namespace QuoteAPI.Controllers
+﻿namespace QuoteAPI.Controllers
 {
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
+    using QuoteAPI.Models;
+    using QuoteAPI.Services;
+
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -27,100 +22,100 @@ namespace QuoteAPI.Controllers
         [HttpGet]
         public IEnumerable<Category> GetCategory()
         {
-            return categoryService.GetAll();
+            return this.categoryService.GetAll();
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory([FromRoute] int id)
+        public IActionResult GetCategory([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var category = categoryService.Get(id);
+            var category = this.categoryService.Get(id);
 
             if (category == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(category);
+            return this.Ok(category);
         }
 
         // GET: api/Categories/5/Quotes
         [HttpGet("{id}/quotes")]
-        public async Task<IActionResult> GetQuotesByCategory([FromRoute] int id)
+        public IActionResult GetQuotesByCategory([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var category = categoryService.Get(id);
+            var category = this.categoryService.Get(id);
 
             if (category == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var quotes = quoteService.FindAll(q => q.Category == category.Title);
+            var quotes = this.quoteService.FindAll(q => q.Category == category.Title);
 
-            return Ok(quotes);
+            return this.Ok(quotes);
         }
 
         // PUT: api/Categories/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory([FromRoute] int id, [FromBody] Category category)
+        public IActionResult PutCategory([FromRoute] int id, [FromBody] Category category)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != category.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            categoryService.Edit(category);
+            this.categoryService.Edit(category);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<IActionResult> PostCategory([FromBody] Category category)
+        public IActionResult PostCategory([FromBody] Category category)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            categoryService.Add(category);
+            this.categoryService.Add(category);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return this.CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
+        public IActionResult DeleteCategory([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var category = categoryService.Get(id);
+            var category = this.categoryService.Get(id);
             if (category == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            categoryService.Delete(category);
+            this.categoryService.Delete(category);
 
-            return Ok(category);
+            return this.Ok(category);
         }
     }
 }

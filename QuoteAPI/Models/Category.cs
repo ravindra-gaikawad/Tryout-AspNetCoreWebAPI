@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace QuoteAPI.Models
+﻿namespace QuoteAPI.Models
 {
     public partial class Category
     {
         public int Id { get; set; }
+
         public string Title { get; set; }
     }
 }
