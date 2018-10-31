@@ -5,52 +5,50 @@
     using System.Linq.Expressions;
     using Microsoft.EntityFrameworkCore;
     using QuoteAPI.Models;
+    using QuoteAPI.Repository;
 
     public class AuthorService : IAuthorService
     {
-        private readonly QuoteDBContext context;
+        private readonly IRepository repository;
 
-        public AuthorService(QuoteDBContext context)
+        public AuthorService(IRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         void IAuthorService.Add(Author entity)
         {
-            this.context.Author.Add(entity);
-            this.context.SaveChanges();
+            this.repository.Add(entity);
         }
 
         void IAuthorService.Delete(Author entity)
         {
-            this.context.Author.Remove(entity);
-            this.context.SaveChanges();
+            this.repository.Delete(entity);
         }
 
         void IAuthorService.Edit(Author entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
-            this.context.SaveChanges();
+            this.repository.Edit(entity);
         }
 
         Author IAuthorService.Find(Expression<Func<Author, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return this.repository.Find(predicate);
         }
 
         IQueryable<Author> IAuthorService.FindAll(Expression<Func<Author, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return this.repository.FindAll(predicate);
         }
 
         Author IAuthorService.Get(int id)
         {
-            return this.context.Author.Find(id);
+            return this.repository.Get<Author>(id);
         }
 
         IQueryable<Author> IAuthorService.GetAll()
         {
-            return this.context.Author;
+            return this.repository.GetAll<Author>();
         }
     }
 }

@@ -5,52 +5,50 @@
     using System.Linq.Expressions;
     using Microsoft.EntityFrameworkCore;
     using QuoteAPI.Models;
+    using QuoteAPI.Repository;
 
     public class CategoryService : ICategoryService
     {
-        private readonly QuoteDBContext context;
+        private readonly IRepository repository;
 
-        public CategoryService(QuoteDBContext context)
+        public CategoryService(IRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         void ICategoryService.Add(Category entity)
         {
-            this.context.Category.Add(entity);
-            this.context.SaveChanges();
+            this.repository.Add(entity);
         }
 
         void ICategoryService.Delete(Category entity)
         {
-            this.context.Category.Remove(entity);
-            this.context.SaveChanges();
+            this.repository.Delete(entity);
         }
 
         void ICategoryService.Edit(Category entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
-            this.context.SaveChanges();
+            this.repository.Edit(entity);
         }
 
         Category ICategoryService.Find(Expression<Func<Category, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return this.repository.Find(predicate);
         }
 
         IQueryable<Category> ICategoryService.FindAll(Expression<Func<Category, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return this.repository.FindAll(predicate);
         }
 
         Category ICategoryService.Get(int id)
         {
-            return this.context.Category.Find(id);
+            return this.repository.Get<Category>(id);
         }
 
         IQueryable<Category> ICategoryService.GetAll()
         {
-            return this.context.Category;
+            return this.repository.GetAll<Category>();
         }
     }
 }
