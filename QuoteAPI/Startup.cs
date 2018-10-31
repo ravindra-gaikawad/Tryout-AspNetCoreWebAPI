@@ -72,6 +72,8 @@ namespace QuoteAPI
         private static void PostPopulationRegistration(ContainerBuilder builder)
         {
             builder.RegisterType<QuoteService>().As<IQuoteService>();
+            builder.RegisterType<AuthorService>().As<IAuthorService>();
+            builder.RegisterType<CategoryService>().As<ICategoryService>();
         }
 
         /// <summary>

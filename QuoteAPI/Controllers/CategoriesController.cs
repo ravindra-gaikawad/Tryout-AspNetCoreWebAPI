@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuoteAPI.Models;
+using QuoteAPI.Services;
 
 namespace QuoteAPI.Controllers
 {
@@ -13,18 +14,20 @@ namespace QuoteAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly QuoteDBContext _context;
+        private readonly ICategoryService categoryService;
+        private readonly IQuoteService quoteService;
 
-        public CategoriesController(QuoteDBContext context)
+        public CategoriesController(ICategoryService categoryService, IQuoteService quoteService)
         {
-            _context = context;
+            this.categoryService = categoryService;
+            this.quoteService = quoteService;
         }
 
         // GET: api/Categories
         [HttpGet]
         public IEnumerable<Category> GetCategory()
         {
-            return _context.Category;
+            return categoryService.GetAll();
         }
 
         // GET: api/Categories/5
@@ -36,7 +39,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = categoryService.Get(id);
 
             if (category == null)
             {
@@ -55,16 +58,14 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = categoryService.Get(id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            var quotes = from q in _context.Quote
-                         where q.Category == category.Title
-                         select q;
+            var quotes = quoteService.FindAll(q => q.Category == category.Title);
 
             return Ok(quotes);
         }
@@ -83,23 +84,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            categoryService.Edit(category);
 
             return NoContent();
         }
@@ -113,8 +98,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Category.Add(category);
-            await _context.SaveChangesAsync();
+            categoryService.Add(category);
 
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
@@ -128,21 +112,15 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = categoryService.Get(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
+            categoryService.Delete(category);
 
             return Ok(category);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Category.Any(e => e.Id == id);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuoteAPI.Models;
+using QuoteAPI.Services;
 
 namespace QuoteAPI.Controllers
 {
@@ -13,18 +14,20 @@ namespace QuoteAPI.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly QuoteDBContext _context;
+        private readonly IAuthorService authorService;
+        private readonly IQuoteService quoteService;
 
-        public AuthorsController(QuoteDBContext context)
+        public AuthorsController(IAuthorService authorService,IQuoteService quoteService)
         {
-            _context = context;
+            this.authorService = authorService;
+            this.quoteService = quoteService;
         }
 
         // GET: api/Authors
         [HttpGet]
         public IEnumerable<Author> GetAuthor()
         {
-            return _context.Author;
+            return authorService.GetAll();
         }
 
         // GET: api/Authors/5
@@ -36,7 +39,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var author = await _context.Author.FindAsync(id);
+            var author = authorService.Get(id);
 
             if (author == null)
             {
@@ -55,16 +58,14 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var author = await _context.Author.FindAsync(id);
+            var author = authorService.Get(id);
 
             if (author == null)
             {
                 return NotFound();
             }
 
-            var quotes = from q in _context.Quote
-                         where q.Author == author.Name
-                         select q;
+            var quotes = quoteService.FindAll(q => q.Author == author.Name);
 
             return Ok(quotes);
         }
@@ -83,23 +84,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            authorService.Edit(author);
 
             return NoContent();
         }
@@ -113,8 +98,7 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Author.Add(author);
-            await _context.SaveChangesAsync();
+            authorService.Add(author);
 
             return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
         }
@@ -128,21 +112,15 @@ namespace QuoteAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var author = await _context.Author.FindAsync(id);
+            var author = authorService.Get(id);
             if (author == null)
             {
                 return NotFound();
             }
 
-            _context.Author.Remove(author);
-            await _context.SaveChangesAsync();
+            authorService.Delete(author);
 
             return Ok(author);
-        }
-
-        private bool AuthorExists(int id)
-        {
-            return _context.Author.Any(e => e.Id == id);
         }
     }
 }
