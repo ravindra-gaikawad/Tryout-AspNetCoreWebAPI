@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "6abfd993-60ff-4afc-b567-0f26e2f9ada8",
+		"name": "HandsOn-AspNetCoreWebAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "MicrosoftDocs-TodoApi",
+			"item": [
+				{
+					"name": "api/todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"walk dog\",\r\n  \"isComplete\":true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44396/api/todo",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44396",
+							"path": [
+								"api",
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/todo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44396/api/todo",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44396",
+							"path": [
+								"api",
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/todo/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44396/api/todo/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44396",
+							"path": [
+								"api",
+								"todo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/todo/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"walk cat\",\r\n  \"isComplete\":false\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44396/api/todo/2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44396",
+							"path": [
+								"api",
+								"todo",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/todo/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:44396/api/todo/2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44396",
+							"path": [
+								"api",
+								"todo",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
