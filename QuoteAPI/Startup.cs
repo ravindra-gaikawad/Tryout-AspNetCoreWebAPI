@@ -35,6 +35,8 @@
             // Reference: https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.Configure<AppSettings>(this.Configuration.GetSection("AppSettings"));
+
             // Now register our services with Autofac container
             var builder = new ContainerBuilder();
 

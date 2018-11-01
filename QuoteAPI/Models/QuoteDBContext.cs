@@ -1,12 +1,15 @@
 ﻿namespace QuoteAPI.Models
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
 
     public partial class QuoteDBContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        private readonly AppSettings appSettings;
+
+        public QuoteDBContext(IOptions<AppSettings> settings)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=QuoteDB;Trusted_Connection=True;");
+            this.appSettings = settings.Value;
         }
 
         public virtual DbSet<Author> Author { get; set; }
@@ -14,6 +17,11 @@
         public virtual DbSet<Category> Category { get; set; }
 
         public virtual DbSet<Quote> Quote { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(this.appSettings.QuoteDBConnectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
