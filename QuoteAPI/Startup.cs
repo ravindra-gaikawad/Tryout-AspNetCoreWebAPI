@@ -12,6 +12,7 @@
     using QuoteAPI.Models;
     using QuoteAPI.Repository;
     using QuoteAPI.Services;
+    using QuoteAPI.UoW;
 
     /// <summary>
     /// References:
@@ -33,7 +34,14 @@
             // Note: We are not injecting DbContext using services.
             // We are using Autofac and Overriden OnConfigure() of DbContext.
             // Reference: https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                // Register filter by type.Filters are added globally by adding it to the MvcOptions.Filters
+                // References:
+                // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.1#servicefilterattribute
+                // https://stackoverflow.com/questions/48255759/inject-service-into-action-filter-with-autofac-keyfilterattibute
+                options.Filters.Add(typeof(ActionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.Configure<AppSettings>(this.Configuration.GetSection("AppSettings"));
 
@@ -94,6 +102,8 @@
             builder.RegisterType<QuoteService>().As<IQuoteService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
         }
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using Microsoft.EntityFrameworkCore;
     using QuoteAPI.Models;
     using QuoteAPI.Repository;
 
@@ -18,6 +17,7 @@
 
         void IQuoteService.Add(Quote entity)
         {
+            this.ResolveDependecies(entity);
             this.repository.Add(entity);
         }
 
@@ -28,6 +28,7 @@
 
         void IQuoteService.Edit(Quote entity)
         {
+            this.ResolveDependecies(entity);
             this.repository.Edit(entity);
         }
 
@@ -49,6 +50,33 @@
         IQueryable<Quote> IQuoteService.GetAll()
         {
             return this.repository.GetAll<Quote>();
+        }
+
+        private void ResolveDependecies(Quote entity)
+        {
+            var author = this.repository.Find<Author>(a => a.Name == entity.Author);
+
+            if (author == null)
+            {
+                author = new Author()
+                {
+                    Name = entity.Author
+                };
+
+                this.repository.Add<Author>(author);
+            }
+
+            var category = this.repository.Find<Category>(c => c.Title == entity.Category);
+
+            if (category == null)
+            {
+                category = new Category()
+                {
+                    Title = entity.Category
+                };
+
+                this.repository.Add<Category>(category);
+            }
         }
     }
 }
