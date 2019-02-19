@@ -43,6 +43,15 @@
                 options.Filters.Add(typeof(ActionFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            policyBuilder =>
+            {
+                policyBuilder.AllowAnyMethod().AllowAnyHeader()
+                       .WithOrigins("*")
+                       .AllowCredentials();
+            }));
+
+
             services.Configure<AppSettings>(this.Configuration.GetSection("AppSettings"));
 
             // Now register our services with Autofac container
@@ -79,6 +88,8 @@
             {
                 app.UseHsts();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
             app.UseMvc();
